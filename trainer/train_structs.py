@@ -11,8 +11,13 @@ from evaluation.eval_structs import EvalMetrics
 
 @dataclass
 class TrainMetadata:
+    # Training loss values after each train iteration
     losses: List[float]
+    # Batch accuracies after each train iteration
     train_accs: List[float]
+    # Batch accuracies after each log step (just for positive class)
+    train_accs_pos_class: List[float]
+    # Validation eval metrics after each training epoch.
     all_val_eval_metrics: List[EvalMetrics]
 
     def to_pydict(self) -> Dict[str, Any]:

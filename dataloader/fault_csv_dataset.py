@@ -51,27 +51,35 @@ class FaultCSVDataset(torch.utils.data.Dataset):
         """
 
         Args:
-            dataframe: Dataframe from, say: data/split/faulty_commit_dev_train.csv
+            dataframe: DataFrame from, say: data/split/faulty_commit_dev_train.csv
             preprocessor: see: compute_data_preprocessor()
         """
         self.dataframe = dataframe
         self.preprocessor = preprocessor
 
+        # Hint: here, apply the preprocessor to all rows of the input dataframe to precompute  the preprocessed
+        #   features, storing as an instance variable. Then, __getitem__() can be a simple lookup into this precomputed
+        #   value.
+        # Hint: to transform the 'faultbasis' column from its odd/even integer values to a 0/1 binary class label,
+        #   note that `dataframe['some_int_column'] % 2` produces a new pd.Series with the modulo operator applied to
+        #   each value.
         # BEGIN YOUR CODE
         # END YOUR CODE
 
 
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        """Retrieves a single row from the dataset.
+        """Retrieves a single preprocessed row from the dataset.
 
         Args:
             idx: Row index to output from the dataset.
 
         Returns:
             row_dict: a Dict with the following keys:
-                features: torch.Tensor. shape=[dim_feats]. Features with preprocessing applied (eg standardization,
-                    one-hot encoding, etc).
-                label: torch.Tensor. shape=[1]. Should be one of two values:
+                features: torch.Tensor. shape=[dim_feats]. dtype=torch.float32. Features with preprocessing applied
+                    (eg standardization, one-hot encoding, etc).
+                    The ordering of the columns of this tensor should look like:
+                        [<numerical_features>, <categorical_features>]
+                label: torch.Tensor. shape=[1]. dtype=torch.float32. Should be one of two values:
                     1: faulty commit ("positive class")
                     0: not-faulty commit ("negative class")
         """

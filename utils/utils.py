@@ -160,17 +160,22 @@ def plot_train_eval_metrics(train_meta: TrainMetadata, test_eval_metrics: Option
 
     """
     # Plotting
-    fig, axd = plt.subplot_mosaic([['train_loss', 'train_acc', 'val_ap']], figsize=(15, 5))
+    fig, axd = plt.subplot_mosaic([['train_loss', 'train_acc', 'train_acc_pos_class', 'val_ap']], figsize=(15, 5))
 
     axd['train_loss'].plot(train_meta.losses)
-    axd['train_loss'].set_xlabel("Epoch")
+    axd['train_loss'].set_xlabel("Iteration")
     axd['train_loss'].set_ylabel("Train Loss")
     axd['train_loss'].set_title('Train Loss')
 
     axd['train_acc'].plot(train_meta.train_accs)
-    axd['train_acc'].set_xlabel("Epoch")
+    axd['train_acc'].set_xlabel("Iteration")
     axd['train_acc'].set_ylabel("Train Accuracy")
     axd['train_acc'].set_title('Train Accuracy')
+
+    axd['train_acc_pos_class'].plot(train_meta.train_accs_pos_class)
+    axd['train_acc_pos_class'].set_xlabel("Iteration")
+    axd['train_acc_pos_class'].set_ylabel("Train Accuracy (Positive class)")
+    axd['train_acc_pos_class'].set_title('Train Accuracy (Positive class)')
 
     axd['val_ap'].plot([val_eval_meta.average_precision for val_eval_meta in train_meta.all_val_eval_metrics])
     axd['val_ap'].set_xlabel("Epoch")

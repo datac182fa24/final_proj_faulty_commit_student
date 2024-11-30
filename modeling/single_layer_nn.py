@@ -4,10 +4,9 @@ from modeling.model_interface import FaultyCommitBinaryClassifierModel
 
 
 class SingleLayerNN(FaultyCommitBinaryClassifierModel):
-    """A single layer neural network for binary classification.. The architecture is:
+    """A single layer neural network for binary classification. The architecture is:
         input -> Linear -> logits
     Equivalent to logistic regression.
-    (Test) AP=0.019 (T=0.521) precision@T=0.051 recall@T=0.085 f1@T=0.03187250996015936
     """
     def __init__(self, dim_input_feats: int):
         super().__init__()
@@ -15,6 +14,20 @@ class SingleLayerNN(FaultyCommitBinaryClassifierModel):
         # END YOUR CODE
 
     def forward(self, x):
+        """Given an input sample, return the predicted logits for the positive class ("is faulty?").
+        Note that, as we are approaching this as a binary classification problem, we don't output logits for the
+        negative class ("is not faulty").
+
+        Args:
+            x: Input features.
+                shape=[batchsize, dim_feats].
+                For details on format, see: `FaultCSVDataset`.
+
+        Returns:
+            is_faulty_commit_logit:
+                shape=[batchsize, 1]
+
+        """
         # Tip: this function should return the logits, not class probability (eg don't do Sigmoid here)
         # BEGIN YOUR CODE
         # END YOUR CODE

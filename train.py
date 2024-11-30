@@ -26,6 +26,8 @@ def train_and_eval(
         skip_val: bool = False,
         skip_test: bool = False,
         model: Optional[torch.nn.Module] = None,
+        criterion: Optional[torch.nn.Module] = None,
+        optimizer: Optional[torch.optim.Optimizer] = None,
 ) -> Tuple[TrainMetadata, Optional[Tuple[EvalMetrics, OperatingPointMetrics]]]:
     """Trains and (optionally) evaluates model on a test set.
 
@@ -37,6 +39,8 @@ def train_and_eval(
         skip_val:
         skip_test:
         model: If given, use the provided model. Otherwise, default to SingleLayerNN.
+        criterion: If given, use the provided criterion. Otherwise, default to BCEWithLogitsLoss
+        optimizer: If given, use the provided optimizer. Otherwise, default to AdamW
 
     Returns:
         train_metadata:
@@ -84,9 +88,10 @@ def train_and_eval(
 
     # Create loss and optimizer
     # Binary cross entropy
-    criterion = torch.nn.BCEWithLogitsLoss()
-
-    optimizer = torch.optim.AdamW(model.parameters(), lr=3e-4, betas=(0.9, 0.95), weight_decay=1e-9)
+    if criterion is None:
+        criterion = torch.nn.BCEWithLogitsLoss()
+    if optimizer is None:
+        optimizer = torch.optim.AdamW(model.parameters(), lr=3e-3, betas=(0.9, 0.95), weight_decay=1e-9)
 
     # Instantiate trainer, enter train loop
     trainer = ClassificationTrainer(
@@ -127,6 +132,7 @@ def train_and_eval(
         threshold_op=train_metadata.all_val_eval_metrics[-1].metrics_op.threshold_op,
     )
     print(f"(Test) {test_metrics_op.summarize_to_str()}")
+
     return train_metadata, (test_eval_metrics, test_metrics_op)
 
 
