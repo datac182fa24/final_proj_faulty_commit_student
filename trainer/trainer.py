@@ -68,6 +68,7 @@ class ClassificationTrainer:
         #     positive_class if predicted_prob >= 0.5 else negative_class
         # `train_accs_pos_class` is like `train_accs`, but computed only over the positive class. This is useful because
         #   in our dataset, there is significant class imbalance: the positive class ("is_faulty") is a very rare.
+        # After each training epoch, populate all_val_metrics by appending the output of `self.perform_validation()`.
         losses = []
         train_accs = []
         train_accs_pos_class = []
