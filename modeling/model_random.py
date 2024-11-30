@@ -4,9 +4,7 @@ from modeling.model_interface import FaultyCommitBinaryClassifierModel
 
 
 class RandomBinaryClassifier(FaultyCommitBinaryClassifierModel):
-    """
-    prob_predict_positive=0.5:
-    (Test) AP=0.013 (T=0.000) precision@T=0.014 recall@T=1.000 f1@T=0.01345007755735162
+    """Classifier that returns positive/negative class based on flipping a (biased) coin.
     """
     def __init__(self, prob_predict_positive: float = 0.5):
         """
@@ -21,7 +19,9 @@ class RandomBinaryClassifier(FaultyCommitBinaryClassifierModel):
         self.prob_predict_positive = prob_predict_positive
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
+        """Given an input sample, return the predicted logits for the positive class ("is faulty?").
+        Note that, as we are approaching this as a binary classification problem, we don't output logits for the
+        negative class ("is not faulty").
 
         Args:
             x: Input features.

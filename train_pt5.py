@@ -47,6 +47,9 @@ def train_and_eval_pt5() -> Tuple[TrainMetadata, Optional[Tuple[EvalMetrics, Ope
         batchsize_test=test_batchsize,
     )
     dim_input_feats = train_dataloader.dataset[0]["features"].shape[0]
+    # Feel free to customize the optimizer (and criterion if you wish, but may not be as useful to modify this)
+    criterion = None
+    optimizer = None
     # Instantiate your improved model (Part 5)
     # BEGIN YOUR CODE
     # END YOUR CODE
@@ -57,6 +60,8 @@ def train_and_eval_pt5() -> Tuple[TrainMetadata, Optional[Tuple[EvalMetrics, Ope
         test_batchsize=test_batchsize,
         train_total_num_epochs=train_total_num_epochs,
         model=model,
+        criterion=criterion,
+        optimizer=optimizer,
     )
 
 
