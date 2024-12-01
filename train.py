@@ -14,8 +14,6 @@ from utils.utils import count_model_parameters, create_dataloaders, plot_train_e
 ################################################################################################################
 # IMPORTANT: Do not modify the contents of this file! The autograder assumes that this file is unchanged.
 ################################################################################################################
-# If you would like to implement a different train script, please create a new file `train_mine.py` and work off of that
-# file.
 
 
 def train_and_eval(
@@ -101,7 +99,7 @@ def train_and_eval(
         train_data_loader=train_dataloader,
         val_data_loader=val_dataloader,
         device=device,
-        log_every_n_batches=400,
+        log_every_n_batches=50,
         skip_val=skip_val,
     )
     tic_train = time.time()

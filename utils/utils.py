@@ -163,17 +163,17 @@ def plot_train_eval_metrics(train_meta: TrainMetadata, test_eval_metrics: Option
     fig, axd = plt.subplot_mosaic([['train_loss', 'train_acc', 'train_acc_pos_class', 'val_ap']], figsize=(15, 5))
 
     axd['train_loss'].plot(train_meta.losses)
-    axd['train_loss'].set_xlabel("Iteration")
+    axd['train_loss'].set_xlabel("Step")
     axd['train_loss'].set_ylabel("Train Loss")
     axd['train_loss'].set_title('Train Loss')
 
     axd['train_acc'].plot(train_meta.train_accs)
-    axd['train_acc'].set_xlabel("Iteration")
+    axd['train_acc'].set_xlabel("Step")
     axd['train_acc'].set_ylabel("Train Accuracy")
     axd['train_acc'].set_title('Train Accuracy')
 
     axd['train_acc_pos_class'].plot(train_meta.train_accs_pos_class)
-    axd['train_acc_pos_class'].set_xlabel("Iteration")
+    axd['train_acc_pos_class'].set_xlabel("Step")
     axd['train_acc_pos_class'].set_ylabel("Train Accuracy (Positive class)")
     axd['train_acc_pos_class'].set_title('Train Accuracy (Positive class)')
 

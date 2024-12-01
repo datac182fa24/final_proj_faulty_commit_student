@@ -32,7 +32,7 @@ class ClassificationTrainer:
             train_data_loader: Training dataloader.
             val_data_loader: Validation dataloader.
             device: Device to do training/validation on.
-            log_every_n_batches: Controls frequency of logging training metrics to stdout.
+            log_every_n_batches: Controls frequency of logging training metrics.
             skip_val: If True, this skips validation.
         """
         self.model = model
@@ -62,13 +62,13 @@ class ClassificationTrainer:
         """
         self.model = self.model.to(device=self.device)
         self.model.train()
-        # Tip: populate `losses, train_accs, train_accs_pos_class` after each iteration.
-        # `train_accs` is the classification accuracy for each iteration (eg batch). To compute this, take the model
+        # Tip: populate `losses, train_accs, train_accs_pos_class` after every `self.log_every_n_batches` batches.
+        # `train_accs` is the classification accuracy. To compute this, take the model
         #   predicted probabilities, and use the binary classification rule with threshold=0.5:
         #     positive_class if predicted_prob >= 0.5 else negative_class
         # `train_accs_pos_class` is like `train_accs`, but computed only over the positive class. This is useful because
         #   in our dataset, there is significant class imbalance: the positive class ("is_faulty") is a very rare.
-        # After each training epoch, populate all_val_metrics by appending the output of `self.perform_validation()`.
+        # After each training epoch, populate `all_val_metrics` by appending the output of `self.perform_validation()`.
         losses = []
         train_accs = []
         train_accs_pos_class = []
