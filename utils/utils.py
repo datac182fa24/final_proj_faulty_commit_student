@@ -52,7 +52,7 @@ def add_entry_to_auto_grader_data(auto_grader_data: Dict[str, Any], keys: List[s
 
     """
     cur_dict = auto_grader_data
-    for key in keys:
+    for key in keys[:-1]:
         if key not in auto_grader_data:
             cur_dict[key] = {}
         cur_dict = cur_dict[key]
