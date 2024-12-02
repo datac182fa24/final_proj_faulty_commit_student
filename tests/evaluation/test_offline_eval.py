@@ -1,13 +1,12 @@
 import sys, os
 
-from torch.testing import assert_allclose
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))))
 
 from typing import List
 import unittest
 
 import torch.utils.data
+import numpy as np
 
 from modeling.trivial_models import AlwaysPositiveBinaryClassifier
 from evaluation.offline_eval import predict_samples, compute_eval_metrics
@@ -95,9 +94,9 @@ class TestComputeEvalMetrics(unittest.TestCase):
             ),
         )
 
-        torch.testing.assert_close(eval_metrics.precisions, eval_metrics_expected.precisions, check_dtype=False)
-        torch.testing.assert_close(eval_metrics.recalls, eval_metrics_expected.recalls, check_dtype=False)
-        torch.testing.assert_close(eval_metrics.thresholds, eval_metrics_expected.thresholds, check_dtype=False)
+        self.assertTrue(np.allclose(eval_metrics.precisions.numpy(), eval_metrics_expected.precisions.numpy(), equal_nan=True))
+        self.assertTrue(np.allclose(eval_metrics.recalls.numpy(), eval_metrics_expected.recalls.numpy(), equal_nan=True))
+        self.assertTrue(np.allclose(eval_metrics.thresholds.numpy(), eval_metrics_expected.thresholds.numpy(), equal_nan=True))
         self.assertAlmostEquals(eval_metrics.average_precision, eval_metrics_expected.average_precision)
         self.assertAlmostEquals(eval_metrics.metrics_op.precision_op, eval_metrics_expected.metrics_op.precision_op)
         self.assertAlmostEquals(eval_metrics.metrics_op.recall_op, eval_metrics_expected.metrics_op.recall_op)
