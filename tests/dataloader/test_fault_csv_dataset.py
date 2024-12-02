@@ -54,8 +54,13 @@ class TestComputeDataPreprocessor(unittest.TestCase):
 
 class TestFaultCsvDataset(unittest.TestCase):
     def test_simple(self):
-        csvpath_dev_train = "data/split/faulty_commit_dev_train.csv"
-        df_train_dev = pd.read_csv(csvpath_dev_train)
+        try:
+            csvpath_dev_train = "data/split/faulty_commit_dev_train.csv"
+            df_train_dev = pd.read_csv(csvpath_dev_train)
+        except:
+            # Gradescope autograder needs a different path
+            csvpath_dev_train = "/autograder/source/solution/data/split/faulty_commit_dev_train.csv"
+            df_train_dev = pd.read_csv(csvpath_dev_train)
 
         numerical_features = [
             'modifications_count',
