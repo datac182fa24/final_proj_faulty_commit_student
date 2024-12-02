@@ -1,9 +1,12 @@
 import argparse
 import time
+import os
 from typing import Tuple, Optional
 
+from matplotlib import pyplot as plt
 import torch
 
+from consts import STUDENT_SUBMISSION_OUTDIR
 from evaluation.offline_eval import eval_model, compute_operating_point_metrics_at_threshold
 from evaluation.eval_structs import OperatingPointMetrics, EvalMetrics
 from modeling.single_layer_nn import SingleLayerNN
@@ -99,7 +102,7 @@ def train_and_eval(
         train_data_loader=train_dataloader,
         val_data_loader=val_dataloader,
         device=device,
-        log_every_n_batches=50,
+        log_every_n_batches=20,
         skip_val=skip_val,
     )
     tic_train = time.time()
@@ -144,8 +147,9 @@ def main_train_pt2c():
         skip_val=True,
         skip_test=True,
     )
-    plot_train_eval_metrics(train_meta_pt2c, test_eval_metrics=None)
-    return train_meta_pt2c
+    fig = plot_train_eval_metrics(train_meta_pt2c, test_eval_metrics=None, outpath_fig=os.path.join(STUDENT_SUBMISSION_OUTDIR, "main_train_pt2c.png"))
+    plt.show()
+    return train_meta_pt2c, fig
 
 
 def main_train_and_eval_pt4():
@@ -158,7 +162,9 @@ def main_train_and_eval_pt4():
         skip_val=False,
         skip_test=False,
     )
-    return train_meta, (test_eval_metrics, test_metrics_op)
+    fig = plot_train_eval_metrics(train_meta, test_eval_metrics=test_eval_metrics,
+                                  outpath_fig=os.path.join(STUDENT_SUBMISSION_OUTDIR, "main_train_pt4.png"))
+    return train_meta, (test_eval_metrics, test_metrics_op), fig
 
 
 def main():
@@ -200,7 +206,8 @@ def main():
         test_eval_metrics, test_metrics_op = _test_things
     else:
         test_eval_metrics, test_metrics_op = None, None
-    plot_train_eval_metrics(train_metadata, test_eval_metrics=test_eval_metrics)
+    plot_train_eval_metrics(train_metadata, test_eval_metrics=test_eval_metrics, outpath_fig=os.path.join(STUDENT_SUBMISSION_OUTDIR, "plot.png"))
+    plt.show()
 
 
 if __name__ == '__main__':
