@@ -20,6 +20,9 @@ class TrainMetadata:
     # Validation eval metrics after each training epoch.
     all_val_eval_metrics: List[EvalMetrics]
 
+    # Number of model parameters
+    num_model_parameters: int
+
     def to_pydict(self) -> Dict[str, Any]:
         """Convert to a python-friendly dict format.
         Similar in spirit to dataclasses.asdict(self), but also convert non-built-in types like

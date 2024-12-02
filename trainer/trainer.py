@@ -6,6 +6,7 @@ from tqdm import trange, tqdm
 from evaluation.offline_eval import eval_model
 from evaluation.eval_structs import OperatingPointMetrics, EvalMetrics
 from trainer.train_structs import TrainMetadata
+from utils.utils import count_model_parameters
 
 
 class ClassificationTrainer:
@@ -20,7 +21,7 @@ class ClassificationTrainer:
             train_data_loader: torch.utils.data.DataLoader,
             val_data_loader: Optional[torch.utils.data.DataLoader] = None,
             device: torch.device = torch.device("cpu"),
-            log_every_n_batches: int = 100,
+            log_every_n_batches: int = 20,
             skip_val: bool = False,
         ):
         """
@@ -80,4 +81,5 @@ class ClassificationTrainer:
             train_accs=train_accs,
             train_accs_pos_class=train_accs_pos_class,
             all_val_eval_metrics=all_val_metrics,
+            num_model_parameters=count_model_parameters(self.model),
         )

@@ -148,24 +148,24 @@ def create_dataloaders(
     return train_dataloader, val_dataloader, test_dataloader, preprocessor
 
 
-def plot_train_eval_metrics(train_meta: TrainMetadata, test_eval_metrics: Optional[EvalMetrics] = None):
+def plot_train_eval_metrics(train_meta: TrainMetadata, test_eval_metrics: Optional[EvalMetrics] = None, outpath_fig: Optional[str] = None) -> plt.Figure:
     """Plots train/val/test metrics.
     Note that val/test metrics are allowed to be missing: these plots will be empty.
 
     Args:
         train_meta:
         test_eval_metrics:
-
+        outpath_fig: If given, save the figure to disk at this outpath.
     Returns:
 
     """
     # Plotting
-    fig, axd = plt.subplot_mosaic([['train_loss', 'train_acc', 'train_acc_pos_class', 'val_ap']], figsize=(15, 5))
+    fig, axd = plt.subplot_mosaic([['train_loss', 'train_acc', 'train_acc_pos_class', 'val_ap'], ["pr_val", "pr_test", ".", "."]], figsize=(15, 5))
 
     axd['train_loss'].plot(train_meta.losses)
     axd['train_loss'].set_xlabel("Step")
     axd['train_loss'].set_ylabel("Train Loss")
-    axd['train_loss'].set_title('Train Loss')
+    axd['train_loss'].set_title(f'Train Loss (num_params={train_meta.num_model_parameters})')
 
     axd['train_acc'].plot(train_meta.train_accs)
     axd['train_acc'].set_xlabel("Step")
@@ -183,18 +183,21 @@ def plot_train_eval_metrics(train_meta: TrainMetadata, test_eval_metrics: Option
     axd['val_ap'].set_title('Val AP')
 
     # Precision/recall on validation set for final epoch
-    fig2, axd2 = plt.subplot_mosaic([['pr_val', 'pr_test']], figsize=(15, 5))
-
-    axd2['pr_val'].plot(train_meta.all_val_eval_metrics[-1].recalls, train_meta.all_val_eval_metrics[-1].precisions)
-    axd2['pr_val'].set_xlabel("Recall")
-    axd2['pr_val'].set_ylabel("Precision")
-    axd2['pr_val'].set_title(f'PR curve (val) AP={train_meta.all_val_eval_metrics[-1].average_precision}')
+    axd['pr_val'].plot(train_meta.all_val_eval_metrics[-1].recalls, train_meta.all_val_eval_metrics[-1].precisions)
+    axd['pr_val'].set_xlabel("Recall")
+    axd['pr_val'].set_ylabel("Precision")
+    axd['pr_val'].set_title(f'PR curve (val) AP={train_meta.all_val_eval_metrics[-1].average_precision}')
 
     if test_eval_metrics is not None:
-        axd2['pr_test'].plot(test_eval_metrics.recalls, test_eval_metrics.precisions)
-        axd2['pr_test'].set_xlabel("Recall")
-        axd2['pr_test'].set_ylabel("Precision")
-        axd2['pr_test'].set_title(f'PR curve (test) AP={test_eval_metrics.average_precision}')
+        axd['pr_test'].plot(test_eval_metrics.recalls, test_eval_metrics.precisions)
+        axd['pr_test'].set_xlabel("Recall")
+        axd['pr_test'].set_ylabel("Precision")
+        axd['pr_test'].set_title(f'PR curve (test) AP={test_eval_metrics.average_precision}')
 
-    plt.tight_layout()
-    plt.show()
+    fig.tight_layout()
+
+    if outpath_fig:
+        print(f"Saving figure to: {outpath_fig}")
+        os.makedirs(os.path.split(outpath_fig)[0], exist_ok=True)
+        fig.savefig(outpath_fig)
+    return fig
