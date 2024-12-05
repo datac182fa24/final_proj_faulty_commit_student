@@ -14,4 +14,4 @@ def assert_equal(tester: unittest.TestCase, a, b):
             msg=f"Expected equal: {a} vs {b}"
         )
     else:
-        tester.assertEquals(a, b)
+        tester.assertEqual(a, b)
