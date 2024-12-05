@@ -97,11 +97,11 @@ class TestComputeEvalMetrics(unittest.TestCase):
         self.assertTrue(np.allclose(eval_metrics.precisions.numpy(), eval_metrics_expected.precisions.numpy(), equal_nan=True))
         self.assertTrue(np.allclose(eval_metrics.recalls.numpy(), eval_metrics_expected.recalls.numpy(), equal_nan=True))
         self.assertTrue(np.allclose(eval_metrics.thresholds.numpy(), eval_metrics_expected.thresholds.numpy(), equal_nan=True))
-        self.assertAlmostEquals(eval_metrics.average_precision, eval_metrics_expected.average_precision)
-        self.assertAlmostEquals(eval_metrics.metrics_op.precision_op, eval_metrics_expected.metrics_op.precision_op)
-        self.assertAlmostEquals(eval_metrics.metrics_op.recall_op, eval_metrics_expected.metrics_op.recall_op)
-        self.assertAlmostEquals(eval_metrics.metrics_op.f1_score_op, eval_metrics_expected.metrics_op.f1_score_op)
-        self.assertAlmostEquals(eval_metrics.metrics_op.threshold_op, eval_metrics_expected.metrics_op.threshold_op)
+        self.assertAlmostEqual(eval_metrics.average_precision, eval_metrics_expected.average_precision)
+        self.assertAlmostEqual(eval_metrics.metrics_op.precision_op, eval_metrics_expected.metrics_op.precision_op)
+        self.assertAlmostEqual(eval_metrics.metrics_op.recall_op, eval_metrics_expected.metrics_op.recall_op)
+        self.assertAlmostEqual(eval_metrics.metrics_op.f1_score_op, eval_metrics_expected.metrics_op.f1_score_op)
+        self.assertAlmostEqual(eval_metrics.metrics_op.threshold_op, eval_metrics_expected.metrics_op.threshold_op)
 
 
 if __name__ == '__main__':
