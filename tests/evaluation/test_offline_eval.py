@@ -88,7 +88,7 @@ class TestComputeEvalMetrics(unittest.TestCase):
                 # precision/recall/f1 at the given classification threshold
                 precision_op=0.75,
                 recall_op=1.0,
-                f1_score_op=0.42857142857142855,
+                f1_score_op=0.8571428571428571,
                 # Classification threshold
                 threshold_op=0.5,
             ),
